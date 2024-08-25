@@ -1,14 +1,15 @@
 package com.carriyo.carriyodemo.service;
 
-import com.carriyo.carriyodemo.adapter.model.ShipmentDTO;
-import com.carriyo.carriyodemo.adapter.repository.ShipmentRepository;
-import com.carriyo.carriyodemo.controller.model.response.shipment_model.Shipment;
+import com.carriyo.carriyodemo.controller.model.request.ShipmentRequest;
+import com.carriyo.carriyodemo.controller.model.response.ShipmentResponse;
+import com.carriyo.carriyodemo.database.model.Shipment;
+import com.carriyo.carriyodemo.database.repository.ShipmentRepository;
 import com.carriyo.carriyodemo.service.interfaces.ShipmentServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.carriyo.carriyodemo.service.converters.RequestConvertToDTO.validateAndTranslateToShipmentDTO;
-import static com.carriyo.carriyodemo.service.converters.ResponseConvertFromDTO.convertShipmentDTOToShipment;
+import static com.carriyo.carriyodemo.service.converters.RequestConvertToModel.validateAndTranslateToShipment;
+import static com.carriyo.carriyodemo.service.converters.ResponseConvertFromModel.convertShipmentToShipmentResponse;
 
 
 @Service
@@ -17,36 +18,36 @@ public class ShipmentService implements ShipmentServiceInterface {
     @Autowired
     private ShipmentRepository shipmentRepository;
     @Override
-    public Shipment getShipment(String shipmentId) {
-        System.out.println("shipmentId ---> " + shipmentId);
+    public ShipmentResponse getShipment(String shipmentId) {
         // 1. validate
-        if(shipmentId == null) throw new NullPointerException("shipment id cannot be a null or empty");
+        if(shipmentId == null) throw new NullPointerException("Shipment id cannot be a null or empty");
 
         // 2. get the shipment detail
-        ShipmentDTO shipmentDTO = shipmentRepository.getShipmentDetail(shipmentId);
-        return convertShipmentDTOToShipment(shipmentDTO);
+        Shipment shipment = shipmentRepository.getShipmentDetail(shipmentId);
+
+        return convertShipmentToShipmentResponse(shipment);
     }
 
     @Override
-    public Shipment addShipment(com.carriyo.carriyodemo.controller.model.request.shipment_model.Shipment newShipment) {
-        // 1. Validate and Transform Data
-        var userDto = validateAndTranslateToShipmentDTO(newShipment);
+    public ShipmentResponse addShipment(ShipmentRequest shipmentRequest) {
+        // 1. Validate and Transform to normal model
+        var newShipment = validateAndTranslateToShipment(shipmentRequest);
 
         // 2.  Save in Dynamo DB
-        ShipmentDTO shipmentAddedInDatabase = shipmentRepository.addShipmentDetail(userDto);
+        Shipment shipmentAddedInDatabase = shipmentRepository.addShipmentDetail(newShipment);
 
-        return convertShipmentDTOToShipment(shipmentAddedInDatabase);
+        return convertShipmentToShipmentResponse(shipmentAddedInDatabase);
     }
 
     @Override
-    public Shipment updateShipment(com.carriyo.carriyodemo.controller.model.request.shipment_model.Shipment updateShipment) {
-        // 1. Validate and Transform Data
-        var userDto = validateAndTranslateToShipmentDTO(updateShipment);
+    public ShipmentResponse updateShipment(ShipmentRequest shipmentRequest) {
+        // 1. Validate and Transform to normal model
+        var updateShipment = validateAndTranslateToShipment(shipmentRequest);
 
         // 2.  Update in Dynamo DB
-        ShipmentDTO shipmentUpdateInDatabase = shipmentRepository.updateShipmentDetail(userDto);
+        Shipment shipmentUpdateInDatabase = shipmentRepository.updateShipmentDetail(updateShipment);
 
-        return convertShipmentDTOToShipment(shipmentUpdateInDatabase);
+        return convertShipmentToShipmentResponse(shipmentUpdateInDatabase);
     }
     @Override
     public void deleteShipment(String shipmentId) {

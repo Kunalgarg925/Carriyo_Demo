@@ -1,4 +1,4 @@
-package com.carriyo.carriyodemo.adapter.config;
+package com.carriyo.carriyodemo.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

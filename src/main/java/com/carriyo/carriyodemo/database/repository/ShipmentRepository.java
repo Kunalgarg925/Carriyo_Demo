@@ -1,10 +1,10 @@
-package com.carriyo.carriyodemo.adapter.repository;
+package com.carriyo.carriyodemo.database.repository;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.model.InternalServerErrorException;
 import com.amazonaws.services.kms.model.NotFoundException;
-import com.carriyo.carriyodemo.adapter.interfaces.ShipmentRepositoryInterface;
-import com.carriyo.carriyodemo.adapter.model.ShipmentDTO;
+import com.carriyo.carriyodemo.database.interfaces.ShipmentRepositoryInterface;
+import com.carriyo.carriyodemo.database.model.Shipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,16 +18,16 @@ public class ShipmentRepository implements ShipmentRepositoryInterface {
     }
 
     @Override
-    public ShipmentDTO getShipmentDetail(String shipmentId) {
+    public Shipment getShipmentDetail(String shipmentId) {
         try{
-            return dynamoDBMapper.load(ShipmentDTO.class, shipmentId);
+            return dynamoDBMapper.load(Shipment.class, shipmentId);
         }catch (Exception exception){
             throw new NotFoundException("No shipment is found in the database");
         }
     }
 
     @Override
-    public ShipmentDTO addShipmentDetail(ShipmentDTO newShipment){
+    public Shipment addShipmentDetail(Shipment newShipment) {
         try{
             dynamoDBMapper.save(newShipment);
             return newShipment;
@@ -37,9 +37,9 @@ public class ShipmentRepository implements ShipmentRepositoryInterface {
     }
 
     @Override
-    public ShipmentDTO updateShipmentDetail(ShipmentDTO updateShipment) {
+    public Shipment updateShipmentDetail(Shipment updateShipment) {
         try{
-            ShipmentDTO shipment = dynamoDBMapper.load(ShipmentDTO.class,updateShipment.getShipmentId());
+            Shipment shipment = dynamoDBMapper.load(Shipment.class,updateShipment.getShipmentId());
             if(shipment != null){
                 dynamoDBMapper.save(updateShipment);
                 return updateShipment;
@@ -57,7 +57,7 @@ public class ShipmentRepository implements ShipmentRepositoryInterface {
     @Override
     public void deleteShipmentDetail(String shipmentId) {
         try{
-            ShipmentDTO shipment = dynamoDBMapper.load(ShipmentDTO.class,shipmentId);
+            Shipment shipment = dynamoDBMapper.load(Shipment.class,shipmentId);
             if(shipment != null){
                 dynamoDBMapper.delete(shipment);
             }else{

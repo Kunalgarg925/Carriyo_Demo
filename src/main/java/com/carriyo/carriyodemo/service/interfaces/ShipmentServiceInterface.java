@@ -1,10 +1,11 @@
 package com.carriyo.carriyodemo.service.interfaces;
 
-import com.carriyo.carriyodemo.controller.model.response.shipment_model.Shipment;
+import com.carriyo.carriyodemo.controller.model.request.ShipmentRequest;
+import com.carriyo.carriyodemo.controller.model.response.ShipmentResponse;
 
 public interface ShipmentServiceInterface {
-    Shipment getShipment(String shipmentId);
-    Shipment addShipment(com.carriyo.carriyodemo.controller.model.request.shipment_model.Shipment newShipment);
-    Shipment updateShipment(com.carriyo.carriyodemo.controller.model.request.shipment_model.Shipment updateShipment);
+    ShipmentResponse getShipment(String shipmentId);
+    ShipmentResponse addShipment(ShipmentRequest shipmentRequest);
+    ShipmentResponse updateShipment(ShipmentRequest shipmentRequest);
     void deleteShipment(String shipmentId);
 }
