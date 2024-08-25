@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseBody handleValidationExceptions(MethodArgumentNotValidException exception) {
-        System.out.println("controller advice");
+    public ResponseBody handleValidationExceptions(MethodArgumentNotValidException exception){
         var errorCode = "";
         ErrorResponse errorResponse = new ErrorResponse(exception.getFieldError().getDefaultMessage(),errorCode);
         return new ResponseBody(errorResponse);
@@ -24,16 +23,14 @@ public class ControllerAdvice {
 
     @ExceptionHandler({ValidationException.class,NullPointerException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseBody handleCustomValidationException(Exception exception) {
-        System.out.println("Controller Advice: ValidationException");
+    public ResponseBody handleCustomValidationException(Exception exception){
         String errorCode = "VALIDATION_ERROR";
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorCode);
         return new ResponseBody(errorResponse);
     }
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseBody handleNotFoundException(NotFoundException exception) {
-        System.out.println("Controller Advice: NotFoundException");
+    public ResponseBody handleNotFoundException(NotFoundException exception){
         String errorCode = "SHIPMENT_NOT_FOUND";
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorCode);
         return new ResponseBody(errorResponse);
@@ -41,8 +38,7 @@ public class ControllerAdvice {
 
     @ExceptionHandler(InternalServerErrorException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseBody handleInternalServerErrorException(InternalServerErrorException exception) {
-        System.out.println("Controller Advice: InternalServerErrorException");
+    public ResponseBody handleInternalServerErrorException(InternalServerErrorException exception){
         String errorCode = "INTERNAL_SERVER_ERROR";
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorCode);
         return new ResponseBody(errorResponse);

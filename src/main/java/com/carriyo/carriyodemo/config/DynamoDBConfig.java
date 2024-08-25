@@ -30,7 +30,6 @@ public class DynamoDBConfig {
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-        System.out.println(dynamoDbEndpoint + ", " + dynamoDbRegion);
         return AmazonDynamoDBClientBuilder.standard()
                 .withEndpointConfiguration(
                         new AwsClientBuilder.EndpointConfiguration(dynamoDbEndpoint, dynamoDbRegion))

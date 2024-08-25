@@ -4,5 +4,5 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
 
 @DynamoDBTypeConvertedEnum
 public enum ShipmentStatus {
-    Preparing, Pending, OutForDelivery, Completed, Failed
+    Preparing, Pending, Completed, Failed
 }
