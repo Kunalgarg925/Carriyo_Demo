@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.model.InternalServerErrorException;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.carriyo.carriyodemo.controller.model.response.ErrorResponse;
 import com.carriyo.carriyodemo.controller.model.response.ResponseBody;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +33,13 @@ public class ControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseBody handleNotFoundException(NotFoundException exception){
         String errorCode = "SHIPMENT_NOT_FOUND";
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorCode);
+        return new ResponseBody(errorResponse);
+    }
+    @ExceptionHandler(JsonProcessingException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseBody handleNotFoundException(JsonProcessingException exception){
+        String errorCode = "JSON_PARSING_ERROR";
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage(), errorCode);
         return new ResponseBody(errorResponse);
     }

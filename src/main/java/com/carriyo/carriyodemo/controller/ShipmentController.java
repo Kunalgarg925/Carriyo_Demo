@@ -4,6 +4,7 @@ import com.carriyo.carriyodemo.controller.model.request.ShipmentRequest;
 import com.carriyo.carriyodemo.controller.model.response.ResponseBody;
 import com.carriyo.carriyodemo.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,11 @@ public class ShipmentController {
     @GetMapping("/{shipmentId}")
     public ResponseBody getShipment(@PathVariable String shipmentId) {
         var shipmentResponse = shipmentService.getShipment(shipmentId);
+        return new ResponseBody(shipmentResponse);
+    }
+    @GetMapping("/es/{shipmentId}")
+    public ResponseBody getShipmentElasticSearch(@PathVariable String shipmentId) {
+        var shipmentResponse  = shipmentService.getShipmentElasticSearch(shipmentId);
         return new ResponseBody(shipmentResponse);
     }
     @PostMapping()

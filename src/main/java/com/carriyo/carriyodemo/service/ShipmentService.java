@@ -57,4 +57,14 @@ public class ShipmentService implements ShipmentServiceInterface {
         // 2. Delete from dynamo db database
         shipmentRepository.deleteShipmentDetail(shipmentId);
     }
+
+    public ShipmentResponse getShipmentElasticSearch(String shipmentId){
+        // 1. validate
+        if(shipmentId == null) throw new NullPointerException("shipment id cannot be a null or empty");
+
+        // 2. Search from elastic search
+        Shipment shipment = shipmentRepository.elasticSearchShipmentByShipmentId(shipmentId);
+
+        return convertShipmentToShipmentResponse(shipment);
+    }
 }
